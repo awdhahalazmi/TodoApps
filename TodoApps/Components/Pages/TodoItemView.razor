@@ -1,0 +1,49 @@
+﻿@using Microsoft.EntityFrameworkCore
+    @using TodoApps.Model;
+    @using TodoApps.Model.Entity
+@page "/todo"
+<button class="btn btn-primary" @onclick ="OnAddTaskClicked"> Create Task</button>
+<button class="btn btn-secondary" @onclick="ShowNotCompletedTasks">Show Not Completed</button>
+
+
+<h3>TodoItemView</h3>
+@foreach (var todo in Data)
+{
+    <TodoOneItem Data="@todo"></TodoOneItem>
+}
+
+
+@code {
+
+    public List<TodoItem> Data { get; set; }
+    public List<TodoItem> AllData { get; set; }
+    [Inject] public NavigationManager  manager { get; set; }
+    [Inject] public IDbContextFactory<TodoDbContext> Factory { get; set; }
+
+    protected override void OnInitialized()
+    {
+        var db = Factory.CreateDbContext();
+
+        AllData = db.TodoItems
+                            .OrderByDescending(todo => todo.IsCompleted) 
+                            .ToList(); Data = AllData;
+
+
+    }
+    public void OnAddTaskClicked ()
+    {
+        manager.NavigateTo("/todo/create");
+    }
+   
+    public void ShowNotCompletedTasks()
+    {
+        if (Data.Count == AllData.Count || Data.All(item => item.IsCompleted))
+        {
+            Data = AllData.Where(todo => !todo.IsCompleted).ToList();
+        }
+        else
+        {
+            Data = AllData; 
+        }
+    }
+}

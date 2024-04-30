@@ -1,0 +1,27 @@
+﻿@page "/todo/create"
+@using Microsoft.EntityFrameworkCore
+
+<h3>ToCreate</h3>
+<EditForm Model= "@Data">
+    <InputText @bind-Value = "@Data.Description"></InputText>
+    IsCompleted
+    <InputCheckbox @bind-Value="@Data.IsCompleted"></InputCheckbox>
+    <button class=" btn btn-primary" @onclick = "AddTodo">Add</button>
+</EditForm>
+@code {
+    public TodoItem Data { get; set; } = new TodoItem();
+
+    [Inject] public NavigationManager manager { get; set; }
+    [Inject] public IDbContextFactory<TodoDbContext> Factory { get; set; }
+    public void AddTodo( )
+    {
+        var db = Factory.CreateDbContext();
+        db.TodoItems.Add(Data);
+        db.SaveChanges();
+
+        manager.NavigateTo("/todo");
+
+
+
+    }
+}

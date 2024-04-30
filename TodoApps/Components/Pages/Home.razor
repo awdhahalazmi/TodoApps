@@ -1,0 +1,20 @@
+﻿@page "/"
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+<TodoOneItem Data= "item1" ></TodoOneItem>
+    @code {
+        public TodoItem item1 = new TodoItem
+        {
+            Description = "Complete all tasks",
+            DueDate = DateTime.Now,
+            Id = 1,
+            IsCompleted = false
+
+
+
+        };
+    }
+    
+Welcome to your new app.

@@ -1,0 +1,14 @@
+﻿
+<div>
+    @Data.Description (@(Data.IsCompleted ? "Completed" : " Underprogress"))
+</div>
+@code {
+    [Parameter] public TodoItem Data { get; set; }
+
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
+    }
+
